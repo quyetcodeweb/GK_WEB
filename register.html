@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+    <form class="form_register">
+        <p class="form_title">Sign Up</p>
+        <div class="form_text">
+            <input type="text" name="username" id="username" placeholder="Enter your name" required>
+            <input type="email" name="emailuser" id="emailuser" placeholder="Enter your email" required>
+            <input type="password" name="passworduser" id="passworduser" placeholder="Create Password" required>
+            <input type="password" name="passwordconfirm" id="passwordconfirm" placeholder="Confirm Password" required>
+        </div>
+        <div class="form_button">
+            <button type="submit">Sign Up</button>
+        </div>
+        <p id="message" style="color: red;"></p> <!-- Thêm hiển thị lỗi -->
+        <div class="form_footer_register">
+            <span>Already have an account? <a href="login.html">Login now</a></span>
+        </div>
+    </form>
+</body>
+<script>
+    document.querySelector('.form_register').addEventListener('submit', async function (event) {
+        event.preventDefault(); // Ngăn chặn reload trang
+
+        const username = document.getElementById('username').value;
+        const emailuser = document.getElementById('emailuser').value;
+        const passworduser = document.getElementById('passworduser').value;
+        const passwordconfirm = document.getElementById('passwordconfirm').value;
+        const message = document.getElementById('message');
+
+        if (passworduser !== passwordconfirm) {
+            message.textContent = "Passwords do not match!";
+            return;
+        }
+
+        const response = await fetch('http://localhost:3000/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, emailuser, passworduser, passwordconfirm })
+        });
+
+        const result = await response.json();
+        message.textContent = result.message;
+
+        if (response.ok) {
+            // Xóa tất cả dữ liệu nhập vào form sau khi đăng ký thành công
+            document.getElementById('username').value = '';
+            document.getElementById('emailuser').value = '';
+            document.getElementById('passworduser').value = '';
+            document.getElementById('passwordconfirm').value = '';
+        }
+    });
+</script>
+
+</html>

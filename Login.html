@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="LoginStyle.css">
+</head>
+
+<body>
+    <div class="background">
+        <div class="LoginForm">
+            <div class="Login">Login</div>
+            <div>
+                <form id="LoginForm" method="POST" action="/login" novalidate>
+                    <div class="LoginElement">
+                        <input type="text" name="email" placeholder="Email">
+                    </div>
+                    <div class="LoginElement">
+                        <input type="password" name="password" placeholder="Password">
+                    </div>
+                    <div class="LoginButton">
+                        <button type="submit">Login</button>
+                    </div>
+                    <div id="login-error"></div>
+                    <div class="line">
+                        <hr>OR
+                        <hr>
+                    </div>
+                    <div class="text">Don't have an account?</div>
+                    <div class="LinkSignup">
+                        <a href="register.html" class="Link">Sign up</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("LoginForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Ngăn chuyển trang
+
+            const formData = new FormData(this);
+            fetch("/login", {
+                method: "POST",
+                body: new URLSearchParams(formData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const errorDiv = document.getElementById("login-error");
+                    if (data.success) {
+                        errorDiv.style.color = "green";
+                        errorDiv.textContent = "Login successful!";
+                    } else {
+                        errorDiv.style.color = "red";
+                        errorDiv.textContent = data.message;
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        });
+    </script>
+
+
+</body>
+
+</html>

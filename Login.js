@@ -10,7 +10,7 @@ db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "gkweb"
+    database: "web"
 });
 
 db.connect(err => {

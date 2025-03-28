@@ -1,0 +1,230 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    position: relative; /* Để cố định phần thông tin cá nhân */
+}
+
+/* Phần thông tin cá nhân (cố định ở góc trái) */
+.profile-section {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 250px;
+}
+
+.profile-info {
+    display: flex;  
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 20px;
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+}
+
+.profile-details strong {
+    font-size: 1rem;
+}
+
+.profile-details .text-muted {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Đăng xuất */
+.dropdown-menu {
+    display: block; /* Luôn hiển thị */
+    background: #4f5664;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    left: 50px;
+    width: 100px;
+}
+
+.dropdown-menu button {
+    display: block;
+    width: 100%;
+    background: none;
+    color: white;
+    border: none;
+    padding: 10px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+    background: #444;
+}
+/* Container chính giữa */
+.container {    
+    width: 700px;
+    margin-top: 50px;
+}
+
+/* Form đăng bài */
+.post-form {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px; /* Thêm padding 2 bên */
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-form .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+}
+
+.post-input {
+    flex: 1;
+    background: white; /* Nền trắng */
+    border: none;
+    padding: 12px;
+    border-radius: 20px;
+    color: black;
+    outline: none;
+}
+
+/* Khung bài post */
+.post-container {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header: Avatar + Tên + Thời gian */
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+}
+
+.text-muted {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Nội dung bài post */
+.post-text {
+    margin-bottom: 10px;
+}
+
+/* Hình ảnh bài post */
+.post-image {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+.post-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #666;
+    padding: 5px 3px;
+}
+
+.comments-shares {
+    display: flex;
+    gap: 15px; /* Khoảng cách giữa bình luận và chia sẻ */
+}
+
+.post-stats span {
+    margin-right: 10px;
+}
+
+/* Nút like & bình luận */
+.post-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    margin-top: 5px;
+}
+
+.btn {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #f0f0f0;
+    border-radius: 5px;
+}
+
+/* Nút Like */
+.btn-like {
+    background-color: white;
+    border: 2px solid black;
+    color: black;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-like:hover {
+    background-color: black;
+    color: white;
+}
+
+/* Bình luận */
+/* Giảm kích thước phần bình luận */
+.comment-box {
+    background: #f8f9fa;
+    padding: 5px; /* Giảm padding */
+    border-radius: 5px;
+    margin-top: 8px;
+    border: 1px solid #ddd;
+    font-size: 0.85rem; /* Giảm kích thước chữ */
+}
+
+/* Giảm kích thước avatar trong bình luận */
+.comment-box .avatar {
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+}
+
+/* Giảm khoảng cách chữ */
+.comment-box .text-muted {
+    font-size: 0.75rem;
+}
+
+/* Giảm margin giữa các phần tử trong bình luận */
+.comment-box strong {
+    font-size: 0.9rem;
+}
+.comment-box .comment-text {
+    margin: 3px 0 0;
+}
+

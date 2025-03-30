@@ -21,13 +21,13 @@ db.connect((err: mysql.QueryError | null) => {
 // Tạo server
 const server = createServer((req: IncomingMessage, res: ServerResponse) => {
     // Thêm header CORS
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Cho phép mọi nguồn
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     // Xử lý request OPTIONS (preflight)
     if (req.method === 'OPTIONS') {
-        res.writeHead(204); // No Content
+        res.writeHead(204);
         res.end();
         return;
     }
@@ -35,7 +35,7 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
     // Route GET: Lấy danh sách bài viết
     if (req.method === 'GET' && req.url === '/posts') {
         const query = `
-            SELECT posts.id, posts.title, posts.body, users.username, posts.created_at 
+            SELECT posts.id, posts.title, posts.body, users.username, posts.liked, posts.created_at 
             FROM posts 
             JOIN users ON posts.user_id = users.id 
             ORDER BY posts.created_at DESC
@@ -56,7 +56,7 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
     } else if (req.method === 'POST' && req.url === '/posts') {
         let body = '';
         req.on('data', (chunk: Buffer) => {
-            body += chunk.toString(); // Nhận dữ liệu từ request
+            body += chunk.toString();
         });
 
         req.on('end', () => {
@@ -69,7 +69,7 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
                     return;
                 }
 
-                const query = `INSERT INTO posts (user_id, title, body, status, created_at) VALUES (?, ?, ?, 'public', NOW())`;
+                const query = `INSERT INTO posts (user_id, title, body, liked, created_at) VALUES (?, ?, ?, 0, NOW())`;
 
                 db.query(
                     query,
@@ -87,6 +87,7 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
                             user_id,
                             title,
                             body: content,
+                            liked: 0,
                             created_at: new Date(),
                         }));
                     }
@@ -95,6 +96,42 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
                 res.writeHead(400, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: 'Invalid JSON' }));
             }
+        });
+
+    // Route POST: Like/Unlike bài viết
+    } else if (req.method === 'POST' && req.url?.startsWith('/like/')) {
+        const postId = req.url.split('/')[2];
+
+        if (!postId) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Post ID is required' }));
+            return;
+        }
+
+        // Lấy trạng thái like hiện tại
+        const checkQuery = `SELECT liked FROM posts WHERE id = ?`;
+        db.query(checkQuery, [postId], (err, results: any[]) => {
+            if (err || results.length === 0) {
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Database error', details: err }));
+                return;
+            }
+
+            const currentLiked = results[0].liked;
+            const newLiked = currentLiked === 1 ? 0 : 1;
+
+            // Cập nhật trạng thái like
+            const updateQuery = `UPDATE posts SET liked = ? WHERE id = ?`;
+            db.query(updateQuery, [newLiked, postId], (err) => {
+                if (err) {
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Database update error', details: err }));
+                    return;
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ postId, liked: newLiked }));
+            });
         });
 
     // Route không tồn tại

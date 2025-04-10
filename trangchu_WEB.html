@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,22 +9,30 @@
     <style>
         /* Phong cách cho từng bài post */
         .post-container .post {
-            margin-bottom: 30px; /* Tạo khoảng cách giữa các bài viết */
-            padding: 10px; /* Thêm khoảng trống bên trong */
-            border: 1px solid #ddd; /* Viền nhẹ quanh bài post */
-            border-radius: 5px; /* Bo góc bài post */
-            background-color: #f9f9f9; /* Màu nền nhẹ */
+            margin-bottom: 30px;
+            /* Tạo khoảng cách giữa các bài viết */
+            padding: 10px;
+            /* Thêm khoảng trống bên trong */
+            border: 1px solid #ddd;
+            /* Viền nhẹ quanh bài post */
+            border-radius: 5px;
+            /* Bo góc bài post */
+            background-color: #f9f9f9;
+            /* Màu nền nhẹ */
         }
 
         /* Hiệu ứng khi hover */
         .post-container .post:hover {
-            background-color: #f0f8ff; /* Màu nền khi hover */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+            background-color: #f0f8ff;
+            /* Màu nền khi hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Hiệu ứng đổ bóng */
         }
 
         .post-form {
             position: relative;
         }
+
         .post-button {
             display: none;
             position: absolute;
@@ -36,11 +45,13 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .post-button.show {
             display: inline-block;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Phần thông tin cá nhân -->
@@ -162,4 +173,5 @@
         loadPosts(); // Hiển thị danh sách bài viết
     </script>
 </body>
+
 </html>

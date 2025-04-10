@@ -91,6 +91,10 @@ const server = http.createServer((req, res) => {
     }
 });
 
+module.exports = (req, res) => {
+    res.end('Login API');
+};
+
 server.listen(3000, () => {
     console.log("Server running at http://localhost:3000");
 });

@@ -13,10 +13,11 @@
         <p class="form_title">Sign Up</p>
         <div class="form_text">
             <input type="text" name="username" id="username" placeholder="Enter your name" required>
-            <input type="email" name="emailuser" id="emailuser" placeholder="Enter your email" required>
+            <!-- BỎ hoặc ẩn email -->
             <input type="password" name="passworduser" id="passworduser" placeholder="Create Password" required>
             <input type="password" name="passwordconfirm" id="passwordconfirm" placeholder="Confirm Password" required>
         </div>
+
         <div class="form_button">
             <button type="submit">Sign Up</button>
         </div>
@@ -31,21 +32,15 @@
         event.preventDefault(); // Ngăn chặn reload trang
 
         const username = document.getElementById('username').value;
-        const emailuser = document.getElementById('emailuser').value;
         const passworduser = document.getElementById('passworduser').value;
         const passwordconfirm = document.getElementById('passwordconfirm').value;
-        const message = document.getElementById('message');
-
-        if (passworduser !== passwordconfirm) {
-            message.textContent = "Passwords do not match!";
-            return;
-        }
 
         const response = await fetch('http://localhost:3000/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, emailuser, passworduser, passwordconfirm })
+            body: JSON.stringify({ username, passworduser, passwordconfirm })
         });
+
 
         const result = await response.json();
         message.textContent = result.message;

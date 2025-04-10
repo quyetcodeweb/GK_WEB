@@ -1,13 +1,11 @@
 const http = require('http');
-const url = require('url');
 const mysql = require('mysql');
 const crypto = require('crypto');
-const fs = require('fs');
 
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root', // Thay bằng user MySQL của bạn
-    password: '', // Thay bằng password MySQL của bạn
+    user: 'root',
+    password: '',
     database: 'web'
 });
 
@@ -17,12 +15,10 @@ connection.connect(err => {
 });
 
 const server = http.createServer((req, res) => {
-    // Thêm header CORS để tránh lỗi
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    // Xử lý preflight request của CORS
     if (req.method === 'OPTIONS') {
         res.writeHead(204);
         return res.end();
@@ -33,8 +29,9 @@ const server = http.createServer((req, res) => {
         req.on('data', chunk => {
             body += chunk.toString();
         });
+
         req.on('end', () => {
-            const { username, emailuser, passworduser, passwordconfirm } = JSON.parse(body);
+            const { username, passworduser, passwordconfirm } = JSON.parse(body);
 
             if (passworduser !== passwordconfirm) {
                 res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -43,10 +40,12 @@ const server = http.createServer((req, res) => {
 
             const hashedPassword = crypto.createHash('md5').update(passworduser).digest('hex');
             const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            const defaultRole = 'user';
 
-            const query = 'INSERT INTO users (full_name, email, password, created_at) VALUES (?, ?, ?, ?)';
-            connection.query(query, [username, emailuser, hashedPassword, createdAt], (err, result) => {
+            const query = 'INSERT INTO users (username, password, role, created_at) VALUES (?, ?, ?, ?)';
+            connection.query(query, [username, hashedPassword, defaultRole, createdAt], (err, result) => {
                 if (err) {
+                    console.error(err);
                     res.writeHead(500, { 'Content-Type': 'application/json' });
                     return res.end(JSON.stringify({ message: 'Database error' }));
                 }

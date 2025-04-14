@@ -1,61 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" href="LoginStyle.css">
 </head>
+
 <body>
     <div class="background">
         <div class="LoginForm">
             <div class="Login">Login</div>
-            <div>
-                <form id="LoginForm" method="POST" action="/login" novalidate>
-                    <div class="LoginElement">
-                        <input type="text" name="email" placeholder="Email">
-                    </div>
-                    <div class="LoginElement">
-                        <input type="password" name="password" placeholder="Password">
-                    </div>
-                    <div class="LoginButton">
-                        <button type="submit">Login</button>
-                    </div>
-                    <div id="login-error"></div>
-                    <div class="line">
-                        <hr>OR<hr>
-                    </div> 
-                    <div class="text">Don't have an account?</div>
-                    <div class="LinkSignup">
-                        <a href="register.html" class="Link">Sign up</a>
-                    </div>
-                </form>
-            </div>
+            <form id="LoginForm">
+                <div class="LoginElement">
+                    <input type="text" id="username" class="Input" placeholder="Username" required>
+                </div>
+                <div class="LoginElement">
+                    <input type="password" id="password" class="Input" placeholder="Password" required>
+                </div>
+                <div class="LoginButton">
+                    <button type="submit">Login</button>
+                </div>
+                <p id="login-error" style="color: red;"></p>
+                <div class="line">
+                    <hr>OR<hr>
+                </div>
+                <div class="text">Don't have an account?</div>
+                <div class="LinkSignup">
+                    <a href="register.html" class="Link">Sign up</a>
+                </div>
+            </form>
         </div>
     </div>
-    
+
     <script>
-        document.getElementById("LoginForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Ngăn chuyển trang
-        
-            const formData = new FormData(this);
-            fetch("/login", {
+        document.getElementById("LoginForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const response = await fetch("http://localhost:3000/Login", {
                 method: "POST",
-                body: new URLSearchParams(formData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                const errorDiv = document.getElementById("login-error");
-                if (data.success) {
-                    errorDiv.style.color = "green";
-                    errorDiv.textContent = "Login successful!";
-                } else {
-                    errorDiv.style.color = "red";
-                    errorDiv.textContent = data.message;
-                }
-            })
-            .catch(error => console.error("Error:", error));
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+            const errorDiv = document.getElementById("login-error");
+
+            errorDiv.style.color = response.ok ? "green" : "red";
+            errorDiv.textContent = data.message || (response.ok ? "Login successful!" : "Login failed");
+
+            if (response.ok) {
+                document.getElementById("username").value = "";
+                document.getElementById("password").value = "";
+            }
         });
     </script>
-        
-
 </body>
+
 </html>
